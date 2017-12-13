@@ -1,29 +1,41 @@
-
-// use std::io::{stdin};
-extern crate calamine;
+#[macro_use]
 extern crate serde_json;
+extern crate calamine;
 
 use calamine::{Sheets, Result, DataType};
+use serde_json::{Value};
 
 use std::collections::HashMap;
 
 /**
  * Flatten takes a HashMap that comes from our rows being derefed
  */
-fn flatten(obj: &HashMap<String, DataType>) {
+// fn flatten(obj: &HashMap<String, DataType>) {
 
-}
+// }
 
-fn handle_cell(cell: &DataType) {
+fn cell_to_json(cell: &DataType) -> std::result::Result<Value, &str> {
     match cell {
-        &DataType::Float(f) => print!("{}", f),
-        &DataType::Int(i) => print!("{}", i),
-        &DataType::String(ref s) => print!("{}", s),
-        &DataType::Bool(b) => print!("{}", b),
-        &DataType::Empty => print!("empty"),
-        &DataType::Error(ref e) => print!("{}", e)
+        &DataType::Float(f) => Ok(json!(f)),
+        &DataType::Int(i) => Ok(json!(i)),
+        &DataType::String(ref s) => Ok(json!(s)),
+        &DataType::Bool(b) => Ok(json!(b)),
+        &DataType::Empty => Ok(Value::Null),
+        &DataType::Error(_) => Err("...") // On devrait probablement ne pas se passer d'erreurs...
     }
 }
+// fn handle_cell(cell: &DataType) {
+//     match cell {
+//         &DataType::Float(f) => print!("{}", f),
+//         &DataType::Int(i) => print!("{}", i),
+//         &DataType::String(ref s) => print!("{}", s),
+//         &DataType::Bool(b) => print!("{}", b),
+//         &DataType::Empty => print!("empty"),
+//         &DataType::Error(ref e) => print!("{}", e)
+//     }
+// }
+
+
 
 /**
  */
